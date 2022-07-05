@@ -7,8 +7,9 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from utils.drf_utils.base_model_serializer import BaseModelSerializer
 
-from .models import User
+from .models import User, Organization
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -87,3 +88,19 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
         data['user_id'] = self.user.id
         return {"code": 20000, "message": "登录成功", "data": data}
+
+
+class OrganizationCreateUpdateSerializer(BaseModelSerializer):
+    class Meta:
+        model = Organization
+        fields = '__all__'
+        read_only_fields = ('id', 'create_time', 'update_time')
+
+
+class OrganizationRetrieveSerializer(BaseModelSerializer):
+    parent_organization_name = serializers.CharField(source='parent.name', required=False, read_only=True,
+                                                     help_text='父组织架构名称')
+
+    class Meta:
+        model = Organization
+        fields = '__all__'

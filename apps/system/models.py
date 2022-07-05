@@ -52,8 +52,8 @@ class Organization(BaseModel):
     name = models.CharField(max_length=64, verbose_name="名称", help_text='名称')
     type = models.CharField(max_length=20, choices=type_choices, default="department", verbose_name="类型",
                             help_text='类型')
-    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, verbose_name="父类架构",
-                               help_text='父类架构')
+    parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, verbose_name="父组织架构",
+                               help_text='父组织架构')
 
     class Meta:
         db_table = 'system_organization'
