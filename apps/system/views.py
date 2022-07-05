@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from utils.drf_utils.custom_json_response import JsonResponse
+from utils.drf_utils.custom_json_response import JsonResponse, unite_response_format_schema
 from .serializers import UserRegisterSerializer, MyTokenObtainPairSerializer
 
 
@@ -64,29 +64,7 @@ class UserRegisterView(CreateAPIView):
                             headers=headers)
 
     @extend_schema(
-        responses={
-            201: {
-                "type": "object",
-                "properties": {
-                    "code": {"type": "integer", 'description': '业务状态码'},
-                    "message": {"type": "string", 'description': '业务提示消息'},
-                    "data": {"type": "object",
-                             'description': '数据',
-                             "properties": {
-                                 "username": {"type": "string", 'description': '用户名'},
-                                 "email": {"type": "string", 'description': '邮箱'}
-                             }}
-                },
-                "example": {
-                    "code": 20000,
-                    "message": "注册成功",
-                    "data": {
-                        "username": "string",
-                        "email": "user@example.com"
-                    }
-                },
-            },
-        },
+        responses=unite_response_format_schema('user-register', UserRegisterSerializer)
     )
     def post(self, request, *args, **kwargs):
         """
