@@ -3,28 +3,34 @@ from django.contrib.auth.models import AbstractUser
 from utils.django_utils.base_model import BaseModel
 
 
-class Menu(BaseModel):
+class Permission(BaseModel):
     """
-    菜单
+    权限
     """
-    name = models.CharField(max_length=30, unique=True, verbose_name="菜单名", help_text='菜单名')
-    parent = models.ForeignKey(to='self', null=True, blank=True, on_delete=models.SET_NULL, verbose_name="父菜单",
-                               help_text='父菜单')
-    icon = models.CharField(max_length=64, blank=True, verbose_name="图标", help_text='图标')
-    code = models.CharField(max_length=64, blank=True, verbose_name="编码", help_text='编码')
-    url = models.CharField(max_length=256, unique=True, null=True, blank=True, verbose_name="编码", help_text='编码')
+    method_choices = (
+        ('POST', '增'),
+        ('DELETE', '删'),
+        ('PUT', '改'),
+        ('PATCH', '局部改'),
+        ('GET', '查')
+    )
+    name = models.CharField(max_length=64, unique=True, verbose_name="权限名", help_text='权限名')
+    parent = models.ForeignKey(to='self', null=True, blank=True, on_delete=models.SET_NULL, verbose_name="父权限",
+                               help_text='父权限')
+    code = models.CharField(max_length=64, unique=True, verbose_name='权限编码', help_text='权限编码')
+    is_menu = models.BooleanField(verbose_name='是否为菜单(true为菜单,false为接口)', help_text='是否为菜单(true为菜单,false为接口)')
+    method = models.CharField(max_length=8, blank=True, default='', choices=method_choices, verbose_name='请求方法',
+                              help_text='请求方法')
+    url_path = models.CharField(max_length=256, blank=True, default='', verbose_name='请求路径', help_text='请求路径')
+    icon = models.CharField(max_length=64, blank=True, default='', verbose_name="图标", help_text='图标')
 
     class Meta:
-        db_table = 'system_menu'
-        verbose_name = '菜单'
+        db_table = 'system_permission'
+        verbose_name = '权限'
         verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.name
-
-    @classmethod
-    def get_menu_by_request_url(cls, url):
-        return dict(menu=Menu.objects.get(url=url))
 
 
 class Role(BaseModel):
@@ -32,8 +38,8 @@ class Role(BaseModel):
     角色：用于权限绑定
     """
     name = models.CharField(max_length=32, unique=True, verbose_name="角色名", help_text='角色名')
-    menus = models.ManyToManyField(Menu, blank=True, verbose_name="菜单权限", help_text='菜单权限')
-    desc = models.CharField(max_length=50, blank=True, verbose_name="描述", help_text='描述')
+    permissions = models.ManyToManyField(Permission, blank=True, verbose_name="权限", help_text='权限')
+    desc = models.CharField(max_length=64, blank=True, default='', verbose_name="描述", help_text='描述')
 
     class Meta:
         db_table = 'system_role'
@@ -48,8 +54,8 @@ class Organization(BaseModel):
     """
     组织架构
     """
-    type_choices = (("unit", "单位"), ("department", "部门"))
-    name = models.CharField(max_length=64, verbose_name="名称", help_text='名称')
+    type_choices = (("company", "公司"), ("department", "部门"))
+    name = models.CharField(max_length=128, verbose_name="名称", help_text='名称')
     type = models.CharField(max_length=20, choices=type_choices, default="department", verbose_name="类型",
                             help_text='类型')
     parent = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, verbose_name="父组织架构",
@@ -66,18 +72,16 @@ class Organization(BaseModel):
 
 class User(AbstractUser):
     gender_choices = (("male", "男"), ("female", "女"))
-    name = models.CharField(max_length=20, blank=True, verbose_name="姓名", help_text='姓名')
+    name = models.CharField(max_length=20, blank=True, default='', verbose_name="姓名", help_text='姓名')
     birthday = models.DateField(null=True, blank=True, verbose_name="出生日期", help_text='出生日期')
     gender = models.CharField(max_length=10, blank=True, default="male", choices=gender_choices, verbose_name="性别",
                               help_text='性别')
-    mobile = models.CharField(max_length=11, blank=True, verbose_name="手机号码", help_text='手机号码')
-    avatar = models.ImageField(upload_to="images/%Y/%m", default="images/default.jpeg",
+    mobile = models.CharField(max_length=11, blank=True, default='', verbose_name="手机号码", help_text='手机号码')
+    avatar = models.ImageField(upload_to="avatars/%Y/%m", default="avatars/default.png",
                                max_length=100, blank=True, verbose_name="头像", help_text='头像')
     department = models.ForeignKey(Organization, null=True, blank=True, on_delete=models.SET_NULL, verbose_name="部门",
                                    help_text='部门')
-    position = models.CharField(max_length=64, blank=True, verbose_name="职位", help_text='职位')
-    superior = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, verbose_name="主管",
-                                 help_text='主管')
+    position = models.CharField(max_length=64, blank=True, default='', verbose_name="职位", help_text='职位')
     roles = models.ManyToManyField(Role, blank=True, verbose_name="角色", help_text='角色')
 
     class Meta:
