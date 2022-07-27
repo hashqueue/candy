@@ -7,7 +7,8 @@
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenRefreshView
-from .views import MyTokenObtainPairView, UserRegisterView, OrganizationViewSet
+from system.views.user import MyTokenObtainPairView, UserRegisterView
+from system.views.organization import OrganizationViewSet
 
 router = routers.DefaultRouter()
 # 如果视图类中没有指定queryset，则需要手动指定basename

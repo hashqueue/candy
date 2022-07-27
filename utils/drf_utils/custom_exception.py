@@ -36,14 +36,15 @@ def custom_exception_handler(exc, context):
                     # 删除多余错误信息
                     if key != 'message':
                         response.data.pop(key)
-            else:
-                response.data['message'] = '输入有误, 请检查.'
-            response.data['code'] = 40000
-            response.data['data'] = None
+                response.data['code'] = 40000
+                response.data['data'] = None
+            if isinstance(response.data, list):
+                response.data = {'code': 40000, 'message': response.data[0], 'data': None}
             return response
         if 'detail' in response.data:
             response.data = {'code': 40000, 'message': response.data.get('detail'), 'data': None}
         else:
+            # 未知错误
             response.data = {'code': 40000, 'message': str(response.data), 'data': None}
         return response
     return response
