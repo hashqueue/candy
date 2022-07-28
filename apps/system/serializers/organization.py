@@ -29,6 +29,10 @@ class OrganizationBaseRetrieveSerializer(BaseModelSerializer):
         fields = '__all__'
 
 
+class OrganizationListSerializer(OrganizationBaseRetrieveSerializer):
+    children = OrganizationBaseRetrieveSerializer(many=True, read_only=True)
+
+
 class OrganizationRetrieveSerializer(OrganizationBaseRetrieveSerializer):
     parent = OrganizationBaseRetrieveSerializer()
 
