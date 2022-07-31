@@ -4,7 +4,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from utils.drf_utils.custom_json_response import JsonResponse, unite_response_format_schema
-from system.serializers.user import UserRegisterSerializer, MyTokenObtainPairSerializer
+from system.serializers.users import UserRegisterSerializer, MyTokenObtainPairSerializer
 
 
 # Create your views here.

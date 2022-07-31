@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from system.models import Organization
 from utils.drf_utils.base_model_serializer import BaseModelSerializer
-from utils.drf_utils.model_utils import get_organization_child_ids
+from utils.drf_utils.model_utils import get_obj_child_ids
 
 
 class OrganizationCreateUpdateSerializer(BaseModelSerializer):
@@ -16,7 +16,7 @@ class OrganizationCreateUpdateSerializer(BaseModelSerializer):
             if parent.id == instance.id:
                 raise serializers.ValidationError('父部门不能为其本身.', code=40000)
             ids = set()
-            get_organization_child_ids(instance.id, Organization, ids)
+            get_obj_child_ids(instance.id, Organization, ids)
             # print(ids)
             if parent.id in ids:
                 raise serializers.ValidationError('父部门不能为其子部门.', code=40000)

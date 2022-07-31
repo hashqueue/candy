@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/3/21 下午8:40
-# @Author  : anonymous
-# @File    : user.py
+# @File    : users.py
 # @Software: PyCharm
 # @Description:
 from rest_framework import serializers
