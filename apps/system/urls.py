@@ -10,11 +10,13 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from system.views.user import MyTokenObtainPairView, UserRegisterView
 from system.views.organization import OrganizationViewSet
 from system.views.permission import PermissionViewSet
+from system.views.role import RoleViewSet
 
 router = routers.DefaultRouter()
 # 如果视图类中没有指定queryset，则需要手动指定basename
 router.register(prefix=r'organizations', viewset=OrganizationViewSet, basename='organization')
 router.register(prefix=r'permissions', viewset=PermissionViewSet, basename='permission')
+router.register(prefix=r'roles', viewset=RoleViewSet, basename='role')
 urlpatterns = [
     path('user/login/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('user/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
