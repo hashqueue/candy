@@ -86,6 +86,12 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'utils.drf_utils.custom_exception.custom_exception_handler',
     # 指定后端的schema为drf_spectacular的schema，用来生成接口文档
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES':
+        [
+            'rest_framework.permissions.IsAuthenticated',
+            # 自定义rbac权限认证
+            'utils.drf_utils.custom_permissions.RbacPermission',
+        ],
     # 指定drf使用的过滤后端
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     # 接口限流
@@ -111,6 +117,12 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
 }
+
+# url权限认证白名单
+WHITE_URL_LIST = [
+    'api/v1/swagger/', 'api/v1/redoc/', 'api/v1/schema/', 'api/v1/system/user/login/',
+    'api/v1/system/user/token/refresh/', 'api/v1/system/user/register/',
+]
 
 AUTHENTICATION_BACKENDS = [
     # 自定义用户认证后端
