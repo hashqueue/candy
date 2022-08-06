@@ -17,7 +17,6 @@ class Permission(BaseModel):
     name = models.CharField(max_length=64, unique=True, verbose_name="权限名", help_text='权限名')
     parent = models.ForeignKey(to='self', null=True, blank=True, on_delete=models.SET_NULL, verbose_name="父权限",
                                help_text='父权限')
-    code = models.CharField(max_length=64, unique=True, verbose_name='权限编码', help_text='权限编码')
     is_menu = models.BooleanField(verbose_name='是否为菜单(true为菜单,false为接口)', help_text='是否为菜单(true为菜单,false为接口)')
     method = models.CharField(max_length=8, blank=True, default='', choices=method_choices, verbose_name='请求方法',
                               help_text='请求方法')

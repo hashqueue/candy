@@ -54,8 +54,20 @@ class PermissionBaseRetrieveSerializer(BaseModelSerializer):
         fields = '__all__'
 
 
-class PermissionListSerializer(PermissionBaseRetrieveSerializer):
+class PermissionTreeSerializer(PermissionBaseRetrieveSerializer):
     children = PermissionBaseRetrieveSerializer(many=True, read_only=True)
+
+
+class PermissionListSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(help_text='权限名称')
+    is_menu = serializers.CharField(help_text='是否是菜单')
+    method = serializers.CharField(help_text='请求方法')
+    url_path = serializers.CharField(help_text='请求路径')
+    icon = serializers.CharField(help_text='菜单图标')
+
+    class Meta:
+        model = Permission
+        fields = ('name', 'is_menu', 'method', 'url_path', 'icon')
 
 
 class PermissionRetrieveSerializer(PermissionBaseRetrieveSerializer):

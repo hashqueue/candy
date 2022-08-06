@@ -7,7 +7,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from utils.drf_utils.custom_json_response import JsonResponse, unite_response_format_schema
 from system.serializers.users import UserRegisterSerializer, MyTokenObtainPairSerializer, UserCreateUpdateSerializer, \
-    UserRetrieveSerializer, UserResetPasswordSerializer
+    UserRetrieveSerializer, UserListDestroySerializer, UserResetPasswordSerializer
 from system.models import User
 
 
@@ -83,7 +83,9 @@ class UserViewSet(ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'update' or self.action == 'partial_update' or self.action == 'create':
             return UserCreateUpdateSerializer
-        elif self.action == 'retrieve' or self.action == 'destroy' or self.action == 'list':
+        elif self.action == 'destroy' or self.action == 'list':
+            return UserListDestroySerializer
+        elif self.action == 'retrieve':
             return UserRetrieveSerializer
         elif self.action == 'reset_password':
             return UserResetPasswordSerializer

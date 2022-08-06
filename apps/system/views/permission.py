@@ -4,7 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from utils.drf_utils.custom_json_response import JsonResponse, unite_response_format_schema
 from system.serializers.permissions import PermissionCreateUpdateSerializer, PermissionRetrieveSerializer, \
-    PermissionListSerializer
+    PermissionTreeSerializer
 from system.models import Permission
 
 
@@ -18,7 +18,7 @@ class PermissionViewSet(ModelViewSet):
         elif self.action == 'retrieve' or self.action == 'destroy':
             return PermissionRetrieveSerializer
         elif self.action == 'list':
-            return PermissionListSerializer
+            return PermissionTreeSerializer
 
     @extend_schema(responses=unite_response_format_schema('create-permission', PermissionCreateUpdateSerializer))
     def create(self, request, *args, **kwargs):

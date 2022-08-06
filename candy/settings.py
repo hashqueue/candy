@@ -28,7 +28,7 @@ config = HandleConfig(file_name=os.path.join(BASE_DIR, 'config.ini'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-57cj&k#ys8k-@f6$@kfjiyii^et6p%2htwxxw8i9dkm79($vc!'
-DEFAULT_PASSWORD = '123456'
+DEFAULT_USER_PASSWORD = '123456'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.get_boolean_value('deploy', 'DEBUG')
 
@@ -73,6 +73,9 @@ SPECTACULAR_SETTINGS = {
     'SERVERS': [{"url": "http://127.0.0.1:8000"}],
 }
 
+API_VERSION = 'v1'
+API_PREFIX = f'/api/{API_VERSION}'
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 指定使用JWT认证
@@ -105,8 +108,8 @@ REST_FRAMEWORK = {
     },
     # API版本
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
-    'DEFAULT_VERSION': 'v1',  # 默认的版本
-    'ALLOWED_VERSIONS': ['v1'],  # 有效的版本
+    'DEFAULT_VERSION': API_VERSION,  # 默认的版本
+    'ALLOWED_VERSIONS': [API_VERSION],  # 有效的版本
     'VERSION_PARAM': 'version',  # 版本的参数名与URL conf中一致
 }
 
@@ -120,8 +123,8 @@ SIMPLE_JWT = {
 
 # url权限认证白名单
 WHITE_URL_LIST = [
-    'api/v1/swagger/', 'api/v1/redoc/', 'api/v1/schema/', 'api/v1/system/user/login/',
-    'api/v1/system/user/token/refresh/', 'api/v1/system/user/register/',
+    f'{API_PREFIX}/swagger/', f'{API_PREFIX}/redoc/', f'{API_PREFIX}/schema/', f'{API_PREFIX}/system/user/login/',
+    f'{API_PREFIX}/system/user/token/refresh/', f'{API_PREFIX}/system/user/register/',
 ]
 
 AUTHENTICATION_BACKENDS = [
