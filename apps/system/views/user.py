@@ -1,5 +1,6 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from rest_framework.generics import CreateAPIView
 from rest_framework.viewsets import ModelViewSet
@@ -55,6 +56,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 @extend_schema(tags=['用户注册'])
 class UserRegisterView(CreateAPIView):
     serializer_class = UserRegisterSerializer
+    permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
         """

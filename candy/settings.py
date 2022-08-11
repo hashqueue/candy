@@ -125,6 +125,8 @@ SIMPLE_JWT = {
 WHITE_URL_LIST = [
     f'{API_PREFIX}/swagger/', f'{API_PREFIX}/redoc/', f'{API_PREFIX}/schema/', f'{API_PREFIX}/system/user/login/',
     f'{API_PREFIX}/system/user/token/refresh/', f'{API_PREFIX}/system/user/register/',
+    # 获取用户信息放开权限 allow anyone
+    rf'{API_PREFIX}/system/users/\d+/'
 ]
 
 AUTHENTICATION_BACKENDS = [
