@@ -43,7 +43,7 @@ class PermissionCreateUpdateSerializer(BaseModelSerializer):
 
     def create(self, validated_data):
         parent = validated_data.get('parent', False)
-        if parent and Permission.objects.get(id=parent.id).is_menu is False:
+        if validated_data.get('is_menu', False) and parent and Permission.objects.get(id=parent.id).is_menu is False:
             raise serializers.ValidationError('菜单父权限必须为菜单权限.')
         return super().create(validated_data)
 
@@ -58,8 +58,17 @@ class PermissionTreeSerializer(PermissionBaseRetrieveSerializer):
     children = PermissionBaseRetrieveSerializer(many=True, read_only=True)
 
 
-class PermissionListSerializer(serializers.ModelSerializer):
+class GetPermissionsTreeWithRoleIdsSerializer(serializers.ModelSerializer):
+    role_ids = serializers.ListField(child=serializers.IntegerField(min_value=1))
+    permissions = PermissionTreeSerializer(many=True, read_only=True)
 
+    class Meta:
+        model = Permission
+        fields = ('role_ids', 'permissions')
+        read_only_fields = ('permissions',)
+
+
+class PermissionListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Permission
         fields = ('name', 'is_menu', 'method', 'url_path', 'icon')
