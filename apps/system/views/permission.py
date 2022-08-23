@@ -37,7 +37,6 @@ class PermissionViewSet(ModelViewSet):
         select permission list
         """
         queryset = self.filter_queryset(self.get_queryset())
-
         serializer = self.get_serializer(queryset, many=True)
         tree_dict = {}
         tree_data = []
@@ -107,36 +106,34 @@ class PermissionViewSet(ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
     @extend_schema(
-        responses=unite_response_format_schema('get-permissions-whit-roles', GetPermissionsTreeWithRoleIdsSerializer))
-    @action(methods=['post'], detail=False, url_path='get-roles-permissions')
-    def get_permissions_whit_roles(self, request, pk=None, version=None):
+        responses=unite_response_format_schema('get-user-permissions', GetPermissionsTreeWithRoleIdsSerializer))
+    @action(methods=['get'], detail=False, url_path='get-user-permissions')
+    def get_current_user_permissions(self, request, pk=None, version=None):
         """
-        通过角色列表获取权限树列表
+        获取当前登录用户的权限树列表
         """
-        serializer = GetPermissionsTreeWithRoleIdsSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            roles_permissions = []
-            role_ids = serializer.data.get('role_ids')
-            for role_id in role_ids:
-                role_objs = Role.objects.filter(id=role_id).all()
-                if len(role_objs) == 0:
-                    raise serializers.ValidationError(f'id为{role_id}的角色不存在.')
-                roles_permissions.extend(role_objs[0].permissions.all())
-            roles_permissions = list(set(roles_permissions))
-            # 获取权限list
-            permissions_serializer = PermissionTreeSerializer(roles_permissions, many=True)
-            tree_dict = {}
-            tree_data = []
-            for item in permissions_serializer.data:
-                tree_dict[item['id']] = item
-            for item_id in tree_dict:
-                if tree_dict.get(item_id).get('parent'):
-                    pid = tree_dict.get(item_id).get('parent')
-                    # 父权限的完整数据
-                    parent_data = tree_dict.get(pid)
-                    # 如果有children就直接追加数据，没有则添加children并设置默认值为[]，然后追加数据
-                    parent_data.setdefault('children', []).append(tree_dict.get(item_id))
-                else:
-                    # item没有parent, 放在最顶层
-                    tree_data.append(tree_dict.get(item_id))
-            return JsonResponse(data={'role_ids': role_ids, 'permissions': tree_data}, msg='success', code=20000)
+        roles_permissions = []
+        role_ids = [role.id for role in self.request.user.roles.all()]
+        for role_id in role_ids:
+            role_objs = Role.objects.filter(id=role_id).all()
+            if len(role_objs) == 0:
+                raise serializers.ValidationError(f'id为{role_id}的角色不存在.')
+            roles_permissions.extend(role_objs[0].permissions.all())
+        roles_permissions = list(set(roles_permissions))
+        # 获取权限list
+        permissions_serializer = PermissionTreeSerializer(roles_permissions, many=True)
+        tree_dict = {}
+        tree_data = []
+        for item in permissions_serializer.data:
+            tree_dict[item['id']] = item
+        for item_id in tree_dict:
+            if tree_dict.get(item_id).get('parent'):
+                pid = tree_dict.get(item_id).get('parent')
+                # 父权限的完整数据
+                parent_data = tree_dict.get(pid)
+                # 如果有children就直接追加数据，没有则添加children并设置默认值为[]，然后追加数据
+                parent_data.setdefault('children', []).append(tree_dict.get(item_id))
+            else:
+                # item没有parent, 放在最顶层
+                tree_data.append(tree_dict.get(item_id))
+        return JsonResponse(data={'permissions': tree_data}, msg='success', code=20000)

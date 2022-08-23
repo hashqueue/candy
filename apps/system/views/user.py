@@ -141,15 +141,23 @@ class UserViewSet(ModelViewSet):
         """
         return super().destroy(request, *args, **kwargs)
 
-    @extend_schema(responses=unite_response_format_schema('reset-password-detail', UserResetPasswordSerializer))
-    @action(methods=['patch'], detail=True)
+    @extend_schema(responses=unite_response_format_schema('reset-password', UserResetPasswordSerializer))
+    @action(methods=['post'], detail=False, url_path='reset-password')
     def reset_password(self, request, pk=None, version=None):
         """
-        重置密码
+        重置当前登陆用户的密码
         """
-        user_obj: User = self.get_object()
         serializer = UserResetPasswordSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            user_obj.set_password(request.data.get('password'))
-            user_obj.save()
-            return JsonResponse(data=None, msg='success', code=20000)
+            self.request.user.set_password(request.data.get('password'))
+            self.request.user.save()
+            return JsonResponse(data={'username': self.request.user.username}, msg='success', code=20000)
+
+    @extend_schema(responses=unite_response_format_schema('get-profile', UserRetrieveSerializer))
+    @action(methods=['get'], detail=False, url_path='profile')
+    def get_profile(self, request, pk=None, version=None):
+        """
+        获取当前用户个人信息
+        """
+        serializer = UserRetrieveSerializer(instance=self.request.user, context={'request': request})
+        return JsonResponse(data=serializer.data, msg='success', code=20000)

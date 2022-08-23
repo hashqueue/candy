@@ -149,8 +149,8 @@ class UserResetPasswordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('password', 'password_confirm')
-        read_only_fields = ('id',)
+        fields = ('username', 'password', 'password_confirm')
+        read_only_fields = ('username',)
         extra_kwargs = {
             'password': {
                 'label': '密码',
