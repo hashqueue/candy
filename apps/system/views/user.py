@@ -83,7 +83,8 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all().order_by('-id')
 
     def get_serializer_class(self):
-        if self.action == 'update' or self.action == 'partial_update' or self.action == 'create':
+        if self.action == 'update' or self.action == 'partial_update' or self.action == 'create' or \
+                self.action == 'update_profile':
             return UserCreateUpdateSerializer
         elif self.action == 'destroy' or self.action == 'list':
             return UserListDestroySerializer
@@ -152,6 +153,22 @@ class UserViewSet(ModelViewSet):
             self.request.user.set_password(request.data.get('password'))
             self.request.user.save()
             return JsonResponse(data={'username': self.request.user.username}, msg='success', code=20000)
+
+    @extend_schema(responses=unite_response_format_schema('update-profile', UserCreateUpdateSerializer))
+    @action(methods=['PUT'], detail=False, url_path='update-profile')
+    def update_profile(self, request, pk=None, version=None):
+        """
+        修改当前登录用户个人信息
+        """
+        instance = self.request.user
+        serializer = UserCreateUpdateSerializer(instance=instance, data=request.data, context={'request': request})
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            if getattr(instance, '_prefetched_objects_cache', None):
+                # If 'prefetch_related' has been applied to a queryset, we need to
+                # forcibly invalidate the prefetch cache on the instance.
+                instance._prefetched_objects_cache = {}
+            return JsonResponse(data=serializer.data, msg='success', code=20000)
 
     @extend_schema(responses=unite_response_format_schema('get-profile', UserRetrieveSerializer))
     @action(methods=['get'], detail=False, url_path='profile')
