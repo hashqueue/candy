@@ -29,7 +29,7 @@ class OrganizationBaseRetrieveSerializer(BaseModelSerializer):
         fields = '__all__'
 
 
-class OrganizationListSerializer(OrganizationBaseRetrieveSerializer):
+class OrganizationTreeListSerializer(OrganizationBaseRetrieveSerializer):
     children = OrganizationBaseRetrieveSerializer(many=True, read_only=True)
 
 
