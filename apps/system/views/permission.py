@@ -5,7 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from utils.drf_utils.custom_json_response import JsonResponse, unite_response_format_schema
 from system.serializers.permissions import PermissionCreateUpdateSerializer, PermissionRetrieveSerializer, \
-    GetPermissionsTreeWithRoleIdsSerializer, PermissionTreeSerializer
+    GetPermissionsTreeWithRoleIdsSerializer, PermissionTreeSerializer, PermissionBaseRetrieveSerializer
 from system.models import Permission, Role
 
 
@@ -19,9 +19,11 @@ class PermissionViewSet(ModelViewSet):
         elif self.action == 'retrieve' or self.action == 'destroy':
             return PermissionRetrieveSerializer
         elif self.action == 'list':
-            return PermissionTreeSerializer
+            return PermissionBaseRetrieveSerializer
         elif self.action == 'get_permissions_whit_roles':
             return GetPermissionsTreeWithRoleIdsSerializer
+        elif self.action == 'get_permission_tree_list':
+            return PermissionTreeSerializer
 
     @extend_schema(responses=unite_response_format_schema('create-permission', PermissionCreateUpdateSerializer))
     def create(self, request, *args, **kwargs):
@@ -36,41 +38,8 @@ class PermissionViewSet(ModelViewSet):
         """
         select permission list
         """
-        queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(queryset, many=True)
-        tree_dict = {}
-        tree_data = []
-        for item in serializer.data:
-            tree_dict[item['id']] = item
-        try:
-            for item_id in tree_dict:
-                if tree_dict.get(item_id).get('parent'):
-                    pid = tree_dict.get(item_id).get('parent')
-                    # 父权限的完整数据
-                    parent_data = tree_dict.get(pid)
-                    # 如果有children就直接追加数据，没有则添加children并设置默认值为[]，然后追加数据
-                    parent_data.setdefault('children', []).append(tree_dict.get(item_id))
-                else:
-                    # item没有parent, 放在最顶层
-                    tree_data.append(tree_dict.get(item_id))
-            data = {
-                'count': len(tree_data),
-                'next': None,
-                'previous': None,
-                'results': tree_data,
-                'total_pages': None,
-                'current_page': None,
-            }
-
-            return JsonResponse(data=data, msg='success', code=20000)
-        except Exception:
-            # 生成tree型数据报错时，按照非tree格式来返回数据
-            page = self.paginate_queryset(queryset)
-            if page is not None:
-                serializer = self.get_serializer(page, many=True)
-                res = self.get_paginated_response(serializer.data)
-                return JsonResponse(data=res.data, msg='success', code=20000)
-            return JsonResponse(data=serializer.data, msg='success', code=20000)
+        res = super().list(request, *args, **kwargs)
+        return JsonResponse(data=res.data, msg='success', code=20000, status=status.HTTP_200_OK)
 
     @extend_schema(responses=unite_response_format_schema('select-permission-detail', PermissionRetrieveSerializer))
     def retrieve(self, request, *args, **kwargs):
@@ -137,3 +106,45 @@ class PermissionViewSet(ModelViewSet):
                 # item没有parent, 放在最顶层
                 tree_data.append(tree_dict.get(item_id))
         return JsonResponse(data={'permissions': tree_data}, msg='success', code=20000)
+
+    @extend_schema(responses=unite_response_format_schema('get-permission-tree-list', PermissionTreeSerializer))
+    @action(methods=['get'], detail=False, url_path='tree')
+    def get_permission_tree_list(self, request, *args, **kwargs):
+        """
+        select permission tree list
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
+        tree_dict = {}
+        tree_data = []
+        for item in serializer.data:
+            tree_dict[item['id']] = item
+        try:
+            for item_id in tree_dict:
+                if tree_dict.get(item_id).get('parent'):
+                    pid = tree_dict.get(item_id).get('parent')
+                    # 父权限的完整数据
+                    parent_data = tree_dict.get(pid)
+                    # 如果有children就直接追加数据，没有则添加children并设置默认值为[]，然后追加数据
+                    parent_data.setdefault('children', []).append(tree_dict.get(item_id))
+                else:
+                    # item没有parent, 放在最顶层
+                    tree_data.append(tree_dict.get(item_id))
+            data = {
+                'count': len(tree_data),
+                'next': None,
+                'previous': None,
+                'results': tree_data,
+                'total_pages': None,
+                'current_page': None,
+            }
+
+            return JsonResponse(data=data, msg='success', code=20000)
+        except Exception:
+            # 生成tree型数据报错时，按照非tree格式来返回数据
+            page = self.paginate_queryset(queryset)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                res = self.get_paginated_response(serializer.data)
+                return JsonResponse(data=res.data, msg='success', code=20000)
+            return JsonResponse(data=serializer.data, msg='success', code=20000)

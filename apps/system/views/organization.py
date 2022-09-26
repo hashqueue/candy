@@ -33,7 +33,7 @@ class OrganizationViewSet(ModelViewSet):
             return OrganizationRetrieveSerializer
         elif self.action == 'list':
             return OrganizationBaseRetrieveSerializer
-        elif self.action == 'get_tree_list':
+        elif self.action == 'get_organization_tree_list':
             return OrganizationTreeListSerializer
 
     @extend_schema(responses=unite_response_format_schema('create-organization', OrganizationCreateUpdateSerializer))
@@ -85,9 +85,9 @@ class OrganizationViewSet(ModelViewSet):
         """
         return super().destroy(request, *args, **kwargs)
 
-    @extend_schema(responses=unite_response_format_schema('get-tree-list', OrganizationTreeListSerializer))
+    @extend_schema(responses=unite_response_format_schema('get-organization-tree-list', OrganizationTreeListSerializer))
     @action(methods=['get'], detail=False, url_path='tree')
-    def get_tree_list(self, request, *args, **kwargs):
+    def get_organization_tree_list(self, request, *args, **kwargs):
         """
         select organization tree list
         """

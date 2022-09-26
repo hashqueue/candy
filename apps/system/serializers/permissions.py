@@ -26,19 +26,25 @@ class PermissionCreateUpdateSerializer(BaseModelSerializer):
         return super().update(instance, validated_data)
 
     def validate(self, attrs):
+        icon: str = attrs.get('icon')
+        component_path: str = attrs.get('component_path')
+        url_path: str = attrs.get('url_path')
+        method: str = attrs.get('method')
         if attrs.get('is_menu'):
-            if attrs.get('method') or attrs.get('url_path'):
+            if icon and component_path:
+                pass
+            else:
+                raise serializers.ValidationError('新增或修改菜单权限时, 图标和组件路径不能为空.')
+            if method or url_path:
                 raise serializers.ValidationError('新增或修改菜单权限时, 请求方法和请求路径必须为空.')
         else:
-            url_path: str = attrs.get('url_path')
-            method: str = attrs.get('method')
             if method and url_path:
-                if attrs.get('method') == '' or url_path == '':
-                    raise serializers.ValidationError('新增或修改接口权限时, 请求方法和请求路径不能为空.')
                 if not all([url_path.startswith('/'), url_path.endswith('/')]):
                     raise serializers.ValidationError('请求路径必须以`/`开头及结尾.')
             else:
                 raise serializers.ValidationError('新增或修改接口权限时, 请求方法和请求路径不能为空.')
+            if icon or component_path:
+                raise serializers.ValidationError('新增或修改接口权限时, 图标和组件路径必须为空.')
         return attrs
 
     def create(self, validated_data):
@@ -65,12 +71,6 @@ class GetPermissionsTreeWithRoleIdsSerializer(serializers.ModelSerializer):
         model = Permission
         fields = ('permissions',)
         read_only_fields = ('permissions',)
-
-
-class PermissionListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Permission
-        fields = ('name', 'is_menu', 'method', 'url_path', 'icon')
 
 
 class PermissionRetrieveSerializer(PermissionBaseRetrieveSerializer):

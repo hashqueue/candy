@@ -5,14 +5,11 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from drf_spectacular.utils import extend_schema_field
 
 from system.models import User
 from system.serializers.organizations import OrganizationBaseRetrieveSerializer
-from system.serializers.permissions import PermissionListSerializer
 from system.serializers.roles import RoleBaseRetrieveSerializer
 from candy.settings import DEFAULT_USER_PASSWORD
-from utils.drf_utils.model_utils import get_user_permissions
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -124,15 +121,10 @@ class UserRetrieveSerializer(serializers.ModelSerializer):
     date_joined = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S', read_only=True, help_text='加入时间')
     department = OrganizationBaseRetrieveSerializer(many=False, read_only=True)
     roles = RoleBaseRetrieveSerializer(many=True, read_only=True)
-    permissions = serializers.SerializerMethodField(help_text='权限列表')
 
     class Meta:
         model = User
         exclude = ('password', 'groups', 'user_permissions', 'first_name', 'last_name', 'last_login')
-
-    @extend_schema_field(PermissionListSerializer(many=True))
-    def get_permissions(self, obj):
-        return get_user_permissions(obj)
 
 
 class UserResetPasswordSerializer(serializers.ModelSerializer):
