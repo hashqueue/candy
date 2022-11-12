@@ -14,7 +14,7 @@ class Permission(BaseModel):
         ('PATCH', '局部改'),
         ('GET', '查')
     )
-    name = models.CharField(max_length=64, unique=True, verbose_name="权限名", help_text='权限名')
+    title = models.CharField(max_length=64, unique=True, verbose_name="权限名称", help_text='权限名称')
     parent = models.ForeignKey(to='self', null=True, blank=True, on_delete=models.SET_NULL, verbose_name="父权限",
                                help_text='父权限')
     is_menu = models.BooleanField(verbose_name='是否为菜单(true为菜单,false为接口)',
@@ -23,8 +23,12 @@ class Permission(BaseModel):
                               help_text='请求方法')
     url_path = models.CharField(max_length=256, blank=True, default='', verbose_name='请求路径', help_text='请求路径')
     icon = models.CharField(max_length=64, blank=True, default='', verbose_name="图标", help_text='图标')
-    component_path = models.CharField(max_length=256, blank=True, default='', verbose_name='组件路径',
-                                      help_text='组件路径')
+    component = models.CharField(max_length=256, blank=True, default='', verbose_name='组件路径',
+                                 help_text='组件路径')
+    path = models.CharField(max_length=256, blank=True, default='', verbose_name='路由path',
+                            help_text='路由path')
+    redirect = models.CharField(max_length=256, blank=True, default='', verbose_name='路由重定向path',
+                                help_text='路由重定向path')
     is_visible = models.BooleanField(blank=True, null=True, verbose_name='是否显示(true为显示,false为隐藏)',
                                      help_text='是否显示(true为显示,false为隐藏)')
 
@@ -34,7 +38,7 @@ class Permission(BaseModel):
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Role(BaseModel):

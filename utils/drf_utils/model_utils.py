@@ -24,7 +24,7 @@ def get_user_permissions(user_obj):
         for permission in permission_list:
             # 去重
             permission_data = {
-                'name': permission.name,
+                'title': permission.title,
                 'is_menu': permission.is_menu,
                 'method': permission.method,
                 'url_path': permission.url_path,

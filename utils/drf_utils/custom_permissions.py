@@ -23,6 +23,9 @@ class RbacPermission(permissions.BasePermission):
         for safe_url in WHITE_URL_LIST:
             if re.match(f'^{safe_url}$', request_url_path):
                 return True
+        """如果用户是超级用户, 则放开权限(只用作系统初始化时注册的superuser用户添加初始数据时使用)"""
+        if request.user.is_superuser:
+            return True
         """admin权限直接放行(admin默认拥有所有权限, 系统初始化数据时配置admin拥有全部权限)"""
         role_name_list = request.user.roles.values_list('name', flat=True)
         if 'admin' in role_name_list:
