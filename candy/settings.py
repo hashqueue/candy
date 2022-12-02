@@ -28,7 +28,7 @@ config = HandleConfig(file_name=os.path.join(BASE_DIR, 'config.ini'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-57cj&k#ys8k-@f6$@kfjiyii^et6p%2htwxxw8i9dkm79($vc!'
-DEFAULT_USER_PASSWORD = '123456'
+DEFAULT_USER_PASSWORD = '88888888'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.get_boolean_value('deploy', 'DEBUG')
 
