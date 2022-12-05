@@ -91,27 +91,13 @@ class PermissionViewSet(ModelViewSet):
         roles_permissions = list(set(roles_permissions))
         # 获取权限list
         permissions_serializer = PermissionTreeSerializer(roles_permissions, many=True)
-        tree_dict = {}
-        tree_data = []
         api_permissions = []
         menu_permissions = []
         for item in permissions_serializer.data:
-            # tree_dict[item['id']] = item
             if item.get('is_menu'):
                 menu_permissions.append(item)
             else:
                 api_permissions.append(item.get('title'))
-        # for item_id in tree_dict:
-        #     # 按钮权限
-        #         if tree_dict.get(item_id).get('parent'):
-        #             pid = tree_dict.get(item_id).get('parent')
-        #             # 父权限的完整数据
-        #             parent_data = tree_dict.get(pid)
-        #             # 如果有children就直接追加数据，没有则添加children并设置默认值为[]，然后追加数据
-        #             parent_data.setdefault('children', []).append(tree_dict.get(item_id))
-        #         else:
-        #             # item没有parent, 放在最顶层
-        #             tree_data.append(tree_dict.get(item_id))
         return JsonResponse(data={'menu_permissions': menu_permissions, 'api_permissions': api_permissions},
                             msg='success', code=20000)
 
