@@ -65,12 +65,13 @@ class PermissionTreeSerializer(PermissionBaseRetrieveSerializer):
 
 
 class GetPermissionsTreeWithRoleIdsSerializer(serializers.ModelSerializer):
-    permissions = PermissionTreeSerializer(many=True, read_only=True)
+    menu_permissions = PermissionBaseRetrieveSerializer(many=True, read_only=True)
+    api_permissions = serializers.ListField(child=serializers.CharField())
 
     class Meta:
         model = Permission
-        fields = ('permissions',)
-        read_only_fields = ('permissions',)
+        fields = ('menu_permissions', 'api_permissions')
+        read_only_fields = ('menu_permissions', 'api_permissions')
 
 
 class PermissionRetrieveSerializer(PermissionBaseRetrieveSerializer):

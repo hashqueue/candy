@@ -90,7 +90,7 @@ class PermissionViewSet(ModelViewSet):
             roles_permissions.extend(role_objs[0].permissions.all())
         roles_permissions = list(set(roles_permissions))
         # 获取权限list
-        permissions_serializer = PermissionTreeSerializer(roles_permissions, many=True)
+        permissions_serializer = PermissionBaseRetrieveSerializer(roles_permissions, many=True)
         api_permissions = []
         menu_permissions = []
         for item in permissions_serializer.data:
