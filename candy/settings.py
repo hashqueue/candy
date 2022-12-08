@@ -251,14 +251,14 @@ LOGGING = {
             "class": "django.utils.log.AdminEmailHandler",
         },
         'console': {
-            'level': 'INFO',
+            'level': 'DEBUG',
             'filters': ['require_debug_true'],
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
         'file': {
             'filters': ['require_debug_false'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             # 滚动生成日志，切割
             'class': 'logging.handlers.RotatingFileHandler',
             # 存放日志文件的位置
@@ -270,13 +270,15 @@ LOGGING = {
         },
     },
     'loggers': {
-        # 自定义日志器，可以在代码中通过logging.getLogger("my_logger")使用
-        'my_logger': {
+        # 自定义日志器 Usage
+        # logger = logging.getLogger('my_debug_logger')
+        # logger.debug(f'build_result ===> {build_result}')
+        'my_debug_logger': {
             'handlers': ['console', 'file'],
             # 启用日志轮转机制
             'propagate': True,
             # 日志器接收的最低日志级别
-            'level': 'INFO'
+            'level': 'DEBUG'
         },
         'django': {
             'handlers': ['mail_admins', 'file', 'console'],
