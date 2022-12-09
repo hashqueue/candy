@@ -40,6 +40,7 @@ ALLOWED_HOSTS = ["*"]
 AUTH_USER_MODEL = 'system.User'
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
 
     'system',
+    'ws_server',
 ]
 
 MIDDLEWARE = [
@@ -154,7 +156,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'candy.wsgi.application'
+# WSGI_APPLICATION = 'candy.wsgi.application'
+ASGI_APPLICATION = "candy.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
