@@ -11,27 +11,27 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 import sys
+import environ
 from datetime import timedelta
 from pathlib import Path
-from utils.django_utils.handle_config import HandleConfig
 
+env = environ.Env()
+# Now `ENV_PATH=.env.prod ./manage.py runserver` uses `.env.prod` file while `./manage.py runserver` uses `.env` file.
+env.read_env(env.str('ENV_PATH', '.env.dev'))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 添加apps目录到python的里去
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps/'))
 
-config = HandleConfig(file_name=os.path.join(BASE_DIR, 'config.ini'))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-57cj&k#ys8k-@f6$@kfjiyii^et6p%2htwxxw8i9dkm79($vc!'
-DEFAULT_USER_PASSWORD = '88888888'
+SECRET_KEY = env('SECRET_KEY')
+DEFAULT_USER_PASSWORD = env('DEFAULT_USER_PASSWORD')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config.get_boolean_value('deploy', 'DEBUG')
-
+DEBUG = env('DEBUG')
 ALLOWED_HOSTS = ["*"]
 
 # Application definition
@@ -75,8 +75,8 @@ SPECTACULAR_SETTINGS = {
     'SERVERS': [{"url": "http://127.0.0.1:8000"}],
 }
 
-API_VERSION = 'v1'
-API_PREFIX = f'/api/{API_VERSION}'
+API_VERSION = env('API_VERSION')
+API_PREFIX = env('API_PREFIX')
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
