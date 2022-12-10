@@ -11,7 +11,7 @@ logger = logging.getLogger('my_debug_logger')
 class ServerPerformanceConsumer(WebsocketConsumer):
 
     def receive(self, text_data=None, bytes_data=None):
-        # logger.debug(self.scope)
+        # logger.info(self.scope)
         try:
             message = json.loads(text_data)
             if message.get('action') == 'get-performance-data':

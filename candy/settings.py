@@ -15,7 +15,7 @@ import environ
 from datetime import timedelta
 from pathlib import Path
 
-env = environ.Env()
+env = environ.Env(DEBUG=(bool, False))
 # Now `ENV_PATH=.env.prod ./manage.py runserver` uses `.env.prod` file while `./manage.py runserver` uses `.env` file.
 env.read_env(env.str('ENV_PATH', '.env.dev'))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -261,7 +261,7 @@ LOGGING = {
         },
         'file': {
             'filters': ['require_debug_false'],
-            'level': 'DEBUG',
+            'level': 'INFO',
             # 滚动生成日志，切割
             'class': 'logging.handlers.RotatingFileHandler',
             # 存放日志文件的位置
@@ -275,13 +275,13 @@ LOGGING = {
     'loggers': {
         # 自定义日志器 Usage
         # logger = logging.getLogger('my_debug_logger')
-        # logger.debug(f'build_result ===> {build_result}')
+        # logger.info(f'build_result ===> {build_result}')
         'my_debug_logger': {
             'handlers': ['console', 'file'],
             # 启用日志轮转机制
             'propagate': True,
             # 日志器接收的最低日志级别
-            'level': 'DEBUG'
+            'level': 'INFO'
         },
         'django': {
             'handlers': ['mail_admins', 'file', 'console'],
