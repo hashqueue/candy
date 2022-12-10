@@ -261,11 +261,11 @@ LOGGING = {
         },
         'file': {
             'filters': ['require_debug_false'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             # 滚动生成日志，切割
             'class': 'logging.handlers.RotatingFileHandler',
             # 存放日志文件的位置
-            'filename': os.path.join(BASE_DIR, 'logs', 'app.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'django.log'),
             'maxBytes': 100 * 1024 * 1024,
             'backupCount': 10,
             'formatter': 'verbose',
@@ -275,15 +275,16 @@ LOGGING = {
     'loggers': {
         # 自定义日志器 Usage
         # logger = logging.getLogger('my_debug_logger')
-        # logger.info(f'build_result ===> {build_result}')
+        # logger.debug(f'build_result ===> {build_result}')
         'my_debug_logger': {
             'handlers': ['console', 'file'],
-            # 启用日志轮转机制
+            # 向不向更高级别的logger传递
             'propagate': True,
             # 日志器接收的最低日志级别
-            'level': 'INFO'
+            'level': 'DEBUG'
         },
-        'django': {
+        # 记录与处理请求有关的信息. 5XX 的响应以 ERROR 消息的形式出现;4XX 的响应以 WARNING 消息的形式出现.
+        'django.request': {
             'handlers': ['mail_admins', 'file', 'console'],
             'level': 'INFO',
             'propagate': True
