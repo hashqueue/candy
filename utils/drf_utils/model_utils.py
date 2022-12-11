@@ -13,7 +13,7 @@ def get_obj_child_ids(parent: int, models_class_name, ids: set):
 
 def get_user_permissions(user_obj):
     """
-    获取用户对象所拥有的所有权限
+    获取用户对象所拥有的所有API权限
     @param user_obj:
     @return:
     """
@@ -24,11 +24,8 @@ def get_user_permissions(user_obj):
         for permission in permission_list:
             # 去重
             permission_data = {
-                'title': permission.title,
-                'is_menu': permission.is_menu,
                 'method': permission.method,
-                'url_path': permission.url_path,
-                'icon': permission.icon,
+                'url_path': permission.url_path
             }
             if permission_data not in request_api_permissions:
                 request_api_permissions.append(permission_data)

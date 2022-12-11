@@ -79,7 +79,7 @@ class PermissionViewSet(ModelViewSet):
     @action(methods=['get'], detail=False, url_path='get-user-permissions')
     def get_current_user_permissions(self, request, pk=None, version=None):
         """
-        获取当前登录用户的权限树列表
+        获取当前登录用户的权限
         """
         roles_permissions = []
         role_ids = [role.id for role in self.request.user.roles.all()]

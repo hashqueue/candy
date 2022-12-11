@@ -100,10 +100,10 @@ REST_FRAMEWORK = {
     # 指定drf使用的过滤后端
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     # 接口限流
-    # 'DEFAULT_THROTTLE_CLASSES': [
-    #     'rest_framework.throttling.AnonRateThrottle',
-    #     'rest_framework.throttling.UserRateThrottle'
-    # ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/day',
         'user': '2000/day'
@@ -125,9 +125,9 @@ SIMPLE_JWT = {
 
 # url权限认证白名单
 WHITE_URL_LIST = [
+    # 需要放开的接口权限[allow anyone which is authenticated]
     f'{API_PREFIX}/swagger/', f'{API_PREFIX}/redoc/', f'{API_PREFIX}/schema/', f'{API_PREFIX}/system/user/login/',
     f'{API_PREFIX}/system/user/token/refresh/', f'{API_PREFIX}/system/user/register/',
-    # 需要放开的接口权限[allow anyone which is authenticated]
     rf'{API_PREFIX}/system/users/profile/', rf'{API_PREFIX}/system/users/reset-password/',
     rf'{API_PREFIX}/system/permissions/get-user-permissions/', rf'{API_PREFIX}/system/users/update-profile/'
 ]
@@ -161,11 +161,14 @@ ASGI_APPLICATION = "candy.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': env('DB_ENGINE'),
+        'NAME': env('DB_NAME'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     }
 }
 
@@ -275,7 +278,7 @@ LOGGING = {
     'loggers': {
         # 自定义日志器 Usage
         # logger = logging.getLogger('my_debug_logger')
-        # logger.debug(f'build_result ===> {build_result}')
+        # logger.debug(f'result: {build_result}')
         'my_debug_logger': {
             'handlers': ['console', 'file'],
             # 向不向更高级别的logger传递

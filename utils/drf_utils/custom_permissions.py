@@ -27,9 +27,9 @@ class RbacPermission(permissions.BasePermission):
         if request.user.is_superuser:
             return True
         """admin权限直接放行(admin默认拥有所有权限, 系统初始化数据时配置admin拥有全部权限)"""
-        role_name_list = request.user.roles.values_list('name', flat=True)
-        if 'admin' in role_name_list:
-            return True
+        # role_name_list = request.user.roles.values_list('name', flat=True)
+        # if 'admin' in role_name_list:
+        #     return True
         """RBAC权限验证"""
         # API权限验证
         user_permissions = get_user_permissions(request.user)

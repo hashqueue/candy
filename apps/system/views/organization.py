@@ -47,7 +47,7 @@ class OrganizationViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         """
-        select user list
+        select organization list
         """
         res = super().list(request, *args, **kwargs)
         return JsonResponse(data=res.data, msg='success', code=20000, status=status.HTTP_200_OK)
