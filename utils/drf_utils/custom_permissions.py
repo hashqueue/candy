@@ -17,8 +17,8 @@ class RbacPermission(permissions.BasePermission):
         request_url_path = request.path
         request_method = request.method
         """演示环境禁止删除数据"""
-        # if request.method == 'DELETE':
-        #     return False
+        if request.method == 'DELETE':
+            return False
         """URL白名单 如果请求url在白名单, 放行"""
         for safe_url in WHITE_URL_LIST:
             if re.match(f'^{safe_url}$', request_url_path):
@@ -26,11 +26,7 @@ class RbacPermission(permissions.BasePermission):
         """如果用户是超级用户, 则放开权限(只用作系统初始化时注册的superuser用户添加初始数据时使用)"""
         if request.user.is_superuser:
             return True
-        """admin权限直接放行(admin默认拥有所有权限, 系统初始化数据时配置admin拥有全部权限)"""
-        # role_name_list = request.user.roles.values_list('name', flat=True)
-        # if 'admin' in role_name_list:
-        #     return True
-        """RBAC权限验证"""
+        """RBAC API权限验证"""
         # API权限验证
         user_permissions = get_user_permissions(request.user)
         for user_permission in user_permissions:
@@ -41,7 +37,7 @@ class RbacPermission(permissions.BasePermission):
 
     # def has_object_permission(self, request, view, obj):
     #     """
-    #     判断对象的权限
+    #     对象级别的权限控制
     #     @param request:
     #     @param view:
     #     @param obj:
