@@ -11,4 +11,4 @@ ENV_PATH=.env.prod python3 manage.py collectstatic --noinput \
     && ENV_PATH=.env.prod python3 manage.py makemigrations \
     && ENV_PATH=.env.prod python3 manage.py migrate \
     && echo "Data migration complete." \
-    && ENV_PATH=.env.prod daphne -b 0.0.0.0 -p 8000 candy.asgi:application
+    && ENV_PATH=.env.prod daphne -b 0.0.0.0 -p 8000 --access-log logs/access-daphne.log candy.asgi:application
