@@ -28,7 +28,7 @@ application = ProtocolTypeRouter({
     "websocket": AllowedHostsOriginValidator(
         AuthMiddlewareStack(
             URLRouter([
-                path("server/get-performance-data/", ServerPerformanceConsumer.as_asgi())
+                path("ws/server/get-performance-data/", ServerPerformanceConsumer.as_asgi())
             ])
         )
     ),
