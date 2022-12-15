@@ -2,6 +2,40 @@
 
 权限控制基于RBAC，前端权限控制精确到菜单和按钮级别。
 
+## 技术栈
+
+### 后端
+```shell
+Django==3.2.16
+django-environ==0.9.0
+django-filter==22.1
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.2.2
+drf-spectacular==0.24.2
+channels==4.0.0
+psutil==5.9.4
+```
+### 数据库
+MySQL 8.0.30
+### 前端
+```shell
+"@ant-design/icons-vue": "^6.1.0",
+"ant-design-vue": "^3.2.15",
+"axios": "^0.27.2",
+"dayjs": "^1.11.6",
+"echarts": "^5.4.1",
+"monaco-editor": "^0.34.1",
+"nprogress": "^0.2.0",
+"path-browserify": "^1.0.1",
+"pinia": "^2.0.27",
+"pinia-plugin-persistedstate": "^2.4.0",
+"screenfull": "^6.0.2",
+"vue": "^3.2.45",
+"vue-echarts": "^6.2.4",
+"vue-router": "^4.1.6"
+"vite": "^3.2.4"
+```
+
 ## 本地开发环境搭建
 ```shell
 virtualenv venv
