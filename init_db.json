@@ -1020,12 +1020,20 @@
   "pk": 2,
   "fields": {
     "create_time": "2022-12-11T23:46:07.126",
-    "update_time": "2022-12-12T04:03:10.779",
+    "update_time": "2022-12-20T22:51:05.999",
     "name": "user",
     "desc": "普通用户角色",
     "permissions": [
       1,
-      6
+      2,
+      3,
+      4,
+      5,
+      6,
+      14,
+      21,
+      22,
+      29
     ]
   }
 },
@@ -1104,7 +1112,7 @@
     "mobile": "",
     "avatar": "avatars/default.png",
     "department": null,
-    "position": "网络流行语`打工是不可能打工的`缔造者",
+    "position": "网络流行语`打工是不可能打工的`创造者",
     "groups": [],
     "user_permissions": [],
     "roles": [

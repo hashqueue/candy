@@ -106,7 +106,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/day',
-        'user': '2000/day'
+        'user': '10000/day'
     },
     # API版本
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
