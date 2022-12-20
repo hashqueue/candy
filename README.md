@@ -42,6 +42,8 @@ virtualenv venv
 source venv/bin/activate
 pip3 install -i https://pypi.doubanio.com/simple -U pip
 pip3 install -i https://pypi.doubanio.com/simple -r requirements.txt
+# 使用docker快速启动一个MySQL8容器并设置密码为123456，并持久化数据到本地/home/hashqueue/mysqldatadir
+docker run --name mysql8 -p 3306:3306 -v /home/hashqueue/mysqldatadir:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:8.0.30
 python3 manage.py makemigrations
 python3 manage.py migrate
 # 开发环境默认会找项目根目录下的.env环境变量文件
