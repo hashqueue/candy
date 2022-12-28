@@ -1,39 +1,55 @@
 # Candy - 基于Django3.2 + Vue3 + MySQL8 可进行二次开发的Admin脚手架
 
-权限控制基于RBAC，前端权限控制精确到菜单和按钮级别。
+权限控制基于RBAC，精确到菜单和按钮级别权限控制。
 
 ## 技术栈
 
 ### 后端
-```shell
+```text
 Django==3.2.16
 django-environ==0.9.0
 django-filter==22.1
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
-drf-spectacular==0.24.2
+drf-spectacular==0.25.1
+mysqlclient==2.1.1
+Pillow==9.3.0
 channels==4.0.0
+daphne==4.0.0
 psutil==5.9.4
 ```
 ### 数据库
 MySQL 8.0.30
 ### 前端
-```shell
-"@ant-design/icons-vue": "^6.1.0",
-"ant-design-vue": "^3.2.15",
-"axios": "^0.27.2",
-"dayjs": "^1.11.6",
-"echarts": "^5.4.1",
-"monaco-editor": "^0.34.1",
-"nprogress": "^0.2.0",
-"path-browserify": "^1.0.1",
-"pinia": "^2.0.27",
-"pinia-plugin-persistedstate": "^2.4.0",
-"screenfull": "^6.0.2",
-"vue": "^3.2.45",
-"vue-echarts": "^6.2.4",
-"vue-router": "^4.1.6"
-"vite": "^3.2.4"
+```json
+{
+   "dependencies": {
+    "@ant-design/icons-vue": "^6.1.0",
+    "ant-design-vue": "^3.2.15",
+    "axios": "^0.27.2",
+    "dayjs": "^1.11.7",
+    "echarts": "^5.4.1",
+    "monaco-editor": "^0.34.1",
+    "nprogress": "^0.2.0",
+    "path-browserify": "^1.0.1",
+    "pinia": "^2.0.28",
+    "screenfull": "^6.0.2",
+    "vue": "^3.2.45",
+    "vue-echarts": "^6.3.3",
+    "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@vitejs/plugin-vue": "^3.2.0",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "eslint": "^8.30.0",
+    "eslint-plugin-vue": "^9.8.0",
+    "less": "^4.1.3",
+    "less-loader": "^11.1.0",
+    "prettier": "^2.8.1",
+    "vite": "^3.2.5"
+  }
+}
 ```
 
 ## 本地开发环境搭建
@@ -46,7 +62,7 @@ pip3 install -i https://pypi.doubanio.com/simple -r requirements.txt
 docker run --name mysql8 -p 3306:3306 -v /home/hashqueue/mysqldatadir:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:8.0.30
 python3 manage.py makemigrations
 python3 manage.py migrate
-# 开发环境默认会找项目根目录下的.env环境变量文件
+# 开发环境默认会找项目根目录下的.env.dev环境变量文件
 python3 manage.py runserver
 # 前端开发环境搭建见前端仓库 https://github.com/hashqueue/candy-web.git
 #####################################################
@@ -89,33 +105,44 @@ ENV_PATH=.env.prod daphne -b 0.0.0.0 -p 8000 candy.asgi:application
     ```
 项目部署成功后访问`http://服务器域名或IP/`即可跳转到登录页面
 
+## 截图
+
+swagger格式接口文档 `http://服务器域名或IP/api/v1/swagger/`
+
+![swagger格式接口文档](images/swagger.png)
+
+redoc格式接口文档 `http://服务器域名或IP/api/v1/redoc/`
+
+![redoc格式接口文档](images/redoc.png)
+
 登录页
+
 ![登录页](images/login.png)
 
 系统首页
+
 ![系统首页](images/index.png)
 
 权限管理
+
 ![权限管理](images/permission.png)
 
 角色管理
+
 ![角色管理](images/role.png)
 
 用户管理
+
 ![用户管理](images/user.png)
 
 部门管理
+
 ![部门管理](images/dept.png)
 
 服务器性能监控
+
 ![服务器性能监控](images/server.png)
 
 个人中心
+
 ![个人中心](images/profile.png)
-
-swagger格式接口文档`http://服务器域名或IP/api/v1/swagger/`
-![swagger格式接口文档](images/swagger.png)
-
-redoc格式接口文档`http://服务器域名或IP/api/v1/redoc/`
-![redoc格式接口文档](images/redoc.png)
-
