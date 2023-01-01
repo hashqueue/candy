@@ -109,40 +109,40 @@ ENV_PATH=.env.prod daphne -b 0.0.0.0 -p 8000 candy.asgi:application
 
 swagger格式接口文档 `http://服务器域名或IP/api/v1/swagger/`
 
-![swagger格式接口文档](images/swagger.png)
+![swagger格式接口文档](docs/images/swagger.png)
 
 redoc格式接口文档 `http://服务器域名或IP/api/v1/redoc/`
 
-![redoc格式接口文档](images/redoc.png)
+![redoc格式接口文档](docs/images/redoc.png)
 
 登录页
 
-![登录页](images/login.png)
+![登录页](docs/images/login.png)
 
 系统首页
 
-![系统首页](images/index.png)
+![系统首页](docs/images/index.png)
 
 权限管理
 
-![权限管理](images/permission.png)
+![权限管理](docs/images/permission.png)
 
 角色管理
 
-![角色管理](images/role.png)
+![角色管理](docs/images/role.png)
 
 用户管理
 
-![用户管理](images/user.png)
+![用户管理](docs/images/user.png)
 
 部门管理
 
-![部门管理](images/dept.png)
+![部门管理](docs/images/dept.png)
 
 服务器性能监控
 
-![服务器性能监控](images/server.png)
+![服务器性能监控](docs/images/server.png)
 
 个人中心
 
-![个人中心](images/profile.png)
+![个人中心](docs/images/profile.png)
