@@ -400,7 +400,7 @@
   "pk": 1,
   "fields": {
     "create_time": "2022-12-11T23:00:34.363",
-    "update_time": "2022-12-21T03:14:52.937",
+    "update_time": "2023-01-09T00:19:47.425",
     "title": "系统管理",
     "parent": null,
     "is_menu": true,
@@ -409,7 +409,7 @@
     "icon": "setting-outlined",
     "component": "@/layout/BasicLayout.vue",
     "path": "/system",
-    "redirect": "/server/monitor",
+    "redirect": "users/list",
     "is_visible": true
   }
 },
@@ -418,7 +418,7 @@
   "pk": 2,
   "fields": {
     "create_time": "2022-12-11T23:03:50.880",
-    "update_time": "2022-12-21T03:15:27.238",
+    "update_time": "2023-01-09T00:05:22.397",
     "title": "权限管理",
     "parent": 1,
     "is_menu": true,
@@ -426,7 +426,7 @@
     "url_path": "",
     "icon": "safety-outlined",
     "component": "@/views/system/permission/PermissionList.vue",
-    "path": "/permissions/list",
+    "path": "permissions/list",
     "redirect": "",
     "is_visible": true
   }
@@ -436,7 +436,7 @@
   "pk": 3,
   "fields": {
     "create_time": "2022-12-11T23:49:30.338",
-    "update_time": "2022-12-21T03:15:19.285",
+    "update_time": "2023-01-09T00:05:17.055",
     "title": "角色管理",
     "parent": 1,
     "is_menu": true,
@@ -444,7 +444,7 @@
     "url_path": "",
     "icon": "team-outlined",
     "component": "@/views/system/role/RoleList.vue",
-    "path": "/roles/list",
+    "path": "roles/list",
     "redirect": "",
     "is_visible": true
   }
@@ -454,7 +454,7 @@
   "pk": 4,
   "fields": {
     "create_time": "2022-12-11T23:50:20.159",
-    "update_time": "2022-12-21T03:15:14.154",
+    "update_time": "2023-01-09T00:05:12.427",
     "title": "用户管理",
     "parent": 1,
     "is_menu": true,
@@ -462,7 +462,7 @@
     "url_path": "",
     "icon": "user-outlined",
     "component": "@/views/system/user/UserList.vue",
-    "path": "/users/list",
+    "path": "users/list",
     "redirect": "",
     "is_visible": true
   }
@@ -472,7 +472,7 @@
   "pk": 5,
   "fields": {
     "create_time": "2022-12-11T23:51:55.072",
-    "update_time": "2022-12-21T03:13:13.610",
+    "update_time": "2023-01-09T00:05:02.007",
     "title": "部门管理",
     "parent": 1,
     "is_menu": true,
@@ -480,7 +480,7 @@
     "url_path": "",
     "icon": "home-outlined",
     "component": "@/views/system/organization/OrganizationList.vue",
-    "path": "/organizations/list",
+    "path": "organizations/list",
     "redirect": "",
     "is_visible": true
   }
@@ -490,7 +490,7 @@
   "pk": 6,
   "fields": {
     "create_time": "2022-12-11T23:56:13.453",
-    "update_time": "2022-12-21T03:15:03.897",
+    "update_time": "2023-01-09T00:04:56.680",
     "title": "服务器性能监控",
     "parent": 1,
     "is_menu": true,
@@ -498,7 +498,7 @@
     "url_path": "",
     "icon": "cloud-server-outlined",
     "component": "@/views/system/server/ServerMonitor.vue",
-    "path": "/server/monitor",
+    "path": "server/monitor",
     "redirect": "",
     "is_visible": true
   }
@@ -1020,20 +1020,12 @@
   "pk": 2,
   "fields": {
     "create_time": "2022-12-11T23:46:07.126",
-    "update_time": "2022-12-20T22:51:05.999",
+    "update_time": "2023-01-09T00:30:19.415",
     "name": "user",
     "desc": "普通用户角色",
     "permissions": [
       1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      14,
-      21,
-      22,
-      29
+      6
     ]
   }
 },
